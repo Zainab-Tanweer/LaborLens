@@ -1,0 +1,360 @@
+{% extends "base.html" %}
+
+{% block title %}Add Company - Government Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-plus-circle me-2"></i>Add New Company
+                </h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-4">
+                    Add a new company to the database. The AI model will automatically classify the company 
+                    based on the provided information. You can add additional notes and evidence sources.
+                </p>
+                
+                <form method="POST">
+                    <!-- Basic Information -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-info-circle me-2"></i>Basic Information
+                            </h5>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label">
+                                <i class="fas fa-building me-1"></i>Company Name *
+                            </label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="brand" class="form-label">
+                                <i class="fas fa-tag me-1"></i>Brand
+                            </label>
+                            <input type="text" class="form-control" id="brand" name="brand" 
+                                   placeholder="e.g., Nike, Apple, Walmart">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="country" class="form-label">
+                                <i class="fas fa-globe me-1"></i>Country
+                            </label>
+                            <input type="text" class="form-control" id="country" name="country" 
+                                   placeholder="e.g., United States, China, Germany">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="year" class="form-label">
+                                <i class="fas fa-calendar me-1"></i>Year
+                            </label>
+                            <input type="number" class="form-control" id="year" name="year" 
+                                   placeholder="e.g., 2024" min="2000" max="2030" value="2024">
+                        </div>
+                    </div>
+                    
+                    <!-- Production & Operations -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-industry me-2"></i>Production & Operations
+                            </h5>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="monthly_production_tonnes" class="form-label">
+                                <i class="fas fa-weight me-1"></i>Monthly Production (tonnes)
+                            </label>
+                            <input type="number" class="form-control" id="monthly_production_tonnes" name="monthly_production_tonnes" 
+                                   placeholder="e.g., 500.0" min="0" step="0.1">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="avg_item_price_usd" class="form-label">
+                                <i class="fas fa-dollar-sign me-1"></i>Average Item Price (USD)
+                            </label>
+                            <input type="number" class="form-control" id="avg_item_price_usd" name="avg_item_price_usd" 
+                                   placeholder="e.g., 25.50" min="0" step="0.01">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="release_cycles_per_year" class="form-label">
+                                <i class="fas fa-sync me-1"></i>Release Cycles Per Year
+                            </label>
+                            <input type="number" class="form-control" id="release_cycles_per_year" name="release_cycles_per_year" 
+                                   placeholder="e.g., 12" min="0">
+                        </div>
+                    </div>
+                    
+                    <!-- Environmental Impact -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-leaf me-2"></i>Environmental Impact
+                            </h5>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="carbon_emissions_tco2e" class="form-label">
+                                <i class="fas fa-smog me-1"></i>Carbon Emissions (tCO2e)
+                            </label>
+                            <input type="number" class="form-control" id="carbon_emissions_tco2e" name="carbon_emissions_tco2e" 
+                                   placeholder="e.g., 10000.0" min="0" step="0.1">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="water_usage_million_litres" class="form-label">
+                                <i class="fas fa-tint me-1"></i>Water Usage (million litres)
+                            </label>
+                            <input type="number" class="form-control" id="water_usage_million_litres" name="water_usage_million_litres" 
+                                   placeholder="e.g., 200.0" min="0" step="0.1">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="landfill_waste_tonnes" class="form-label">
+                                <i class="fas fa-trash me-1"></i>Landfill Waste (tonnes)
+                            </label>
+                            <input type="number" class="form-control" id="landfill_waste_tonnes" name="landfill_waste_tonnes" 
+                                   placeholder="e.g., 800.0" min="0" step="0.1">
+                        </div>
+                    </div>
+                    
+                    <!-- Labor & Working Conditions -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-users me-2"></i>Labor & Working Conditions
+                            </h5>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="avg_worker_wage_usd" class="form-label">
+                                <i class="fas fa-money-bill-wave me-1"></i>Average Worker Wage (USD)
+                            </label>
+                            <input type="number" class="form-control" id="avg_worker_wage_usd" name="avg_worker_wage_usd" 
+                                   placeholder="e.g., 150.0" min="0" step="0.01">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="working_hours_per_week" class="form-label">
+                                <i class="fas fa-clock me-1"></i>Working Hours Per Week
+                            </label>
+                            <input type="number" class="form-control" id="working_hours_per_week" name="working_hours_per_week" 
+                                   placeholder="e.g., 40" min="0" max="168">
+                        </div>
+                    </div>
+                    
+                    <!-- Business Metrics -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-chart-line me-2"></i>Business Metrics
+                            </h5>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="return_rate_percent" class="form-label">
+                                <i class="fas fa-undo me-1"></i>Return Rate (%)
+                            </label>
+                            <input type="number" class="form-control" id="return_rate_percent" name="return_rate_percent" 
+                                   placeholder="e.g., 25.5" min="0" max="100" step="0.1">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="avg_spend_per_customer_usd" class="form-label">
+                                <i class="fas fa-shopping-cart me-1"></i>Average Spend Per Customer (USD)
+                            </label>
+                            <input type="number" class="form-control" id="avg_spend_per_customer_usd" name="avg_spend_per_customer_usd" 
+                                   placeholder="e.g., 120.0" min="0" step="0.01">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="shopping_frequency_per_year" class="form-label">
+                                <i class="fas fa-calendar-check me-1"></i>Shopping Frequency Per Year
+                            </label>
+                            <input type="number" class="form-control" id="shopping_frequency_per_year" name="shopping_frequency_per_year" 
+                                   placeholder="e.g., 8" min="0">
+                        </div>
+                    </div>
+                    
+                    <!-- Social Media & Sentiment -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-share-alt me-2"></i>Social Media & Sentiment
+                            </h5>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="instagram_mentions_thousands" class="form-label">
+                                <i class="fab fa-instagram me-1"></i>Instagram Mentions (thousands)
+                            </label>
+                            <input type="number" class="form-control" id="instagram_mentions_thousands" name="instagram_mentions_thousands" 
+                                   placeholder="e.g., 5000.0" min="0" step="0.1">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="tiktok_mentions_thousands" class="form-label">
+                                <i class="fas fa-music me-1"></i>TikTok Mentions (thousands)
+                            </label>
+                            <input type="number" class="form-control" id="tiktok_mentions_thousands" name="tiktok_mentions_thousands" 
+                                   placeholder="e.g., 3000.0" min="0" step="0.1">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="sentiment_score" class="form-label">
+                                <i class="fas fa-heart me-1"></i>Sentiment Score
+                            </label>
+                            <input type="number" class="form-control" id="sentiment_score" name="sentiment_score" 
+                                   placeholder="e.g., 0.5" min="-1" max="1" step="0.01">
+                            <div class="form-text">Range: -1 (negative) to 1 (positive)</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="social_sentiment_label" class="form-label">
+                                <i class="fas fa-comment me-1"></i>Social Sentiment Label
+                            </label>
+                            <select class="form-select" id="social_sentiment_label" name="social_sentiment_label">
+                                <option value="">Select sentiment</option>
+                                <option value="Positive">Positive</option>
+                                <option value="Neutral">Neutral</option>
+                                <option value="Negative">Negative</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Economic & Compliance -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-chart-pie me-2"></i>Economic & Compliance
+                            </h5>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="gdp_contribution_million_usd" class="form-label">
+                                <i class="fas fa-coins me-1"></i>GDP Contribution (million USD)
+                            </label>
+                            <input type="number" class="form-control" id="gdp_contribution_million_usd" name="gdp_contribution_million_usd" 
+                                   placeholder="e.g., 500.0" min="-1000" step="0.1">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="env_cost_index" class="form-label">
+                                <i class="fas fa-leaf me-1"></i>Environmental Cost Index
+                            </label>
+                            <input type="number" class="form-control" id="env_cost_index" name="env_cost_index" 
+                                   placeholder="e.g., 0.5" min="0" max="1" step="0.01">
+                            <div class="form-text">Range: 0 (low cost) to 1 (high cost)</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="sustainability_score" class="form-label">
+                                <i class="fas fa-seedling me-1"></i>Sustainability Score
+                            </label>
+                            <input type="number" class="form-control" id="sustainability_score" name="sustainability_score" 
+                                   placeholder="e.g., 75.0" min="0" max="100" step="0.1">
+                            <div class="form-text">Range: 0-100</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="transparency_index" class="form-label">
+                                <i class="fas fa-eye me-1"></i>Transparency Index
+                            </label>
+                            <input type="number" class="form-control" id="transparency_index" name="transparency_index" 
+                                   placeholder="e.g., 60.0" min="0" max="100" step="0.1">
+                            <div class="form-text">Range: 0-100</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="compliance_score" class="form-label">
+                                <i class="fas fa-check-circle me-1"></i>Compliance Score
+                            </label>
+                            <input type="number" class="form-control" id="compliance_score" name="compliance_score" 
+                                   placeholder="e.g., 85.0" min="0" max="100" step="0.1">
+                            <div class="form-text">Range: 0-100</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="ethical_rating" class="form-label">
+                                <i class="fas fa-star me-1"></i>Ethical Rating
+                            </label>
+                            <input type="number" class="form-control" id="ethical_rating" name="ethical_rating" 
+                                   placeholder="e.g., 3.5" min="0" max="5" step="0.1">
+                            <div class="form-text">Range: 0-5</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Government Notes & Evidence -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-file-alt me-2"></i>Government Notes & Evidence
+                            </h5>
+                        </div>
+                        
+                        <div class="col-12 mb-3">
+                            <label for="notes" class="form-label">
+                                <i class="fas fa-sticky-note me-1"></i>Notes
+                            </label>
+                            <textarea class="form-control" id="notes" name="notes" rows="3" 
+                                      placeholder="Add any relevant notes about the company, their practices, or any concerns..."></textarea>
+                        </div>
+                        
+                        <div class="col-12 mb-3">
+                            <label for="evidence_sources" class="form-label">
+                                <i class="fas fa-link me-1"></i>Evidence Sources
+                            </label>
+                            <textarea class="form-control" id="evidence_sources" name="evidence_sources" rows="3" 
+                                      placeholder="List sources of information, reports, investigations, or other evidence..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Buttons -->
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('manage_companies') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Companies
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-plus-circle me-2"></i>Add Company
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Information Box -->
+        <div class="card border-0 shadow-sm mt-4">
+            <div class="card-header bg-info text-white">
+                <h6 class="mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>How Classification Works
+                </h6>
+            </div>
+            <div class="card-body">
+                <p class="mb-2">
+                    The AI model automatically classifies companies based on 30 features including:
+                </p>
+                <ul class="mb-0">
+                    <li><strong>Production Data:</strong> Monthly production, item prices, release cycles</li>
+                    <li><strong>Environmental Impact:</strong> Carbon emissions, water usage, waste generation</li>
+                    <li><strong>Labor Conditions:</strong> Worker wages, working hours</li>
+                    <li><strong>Business Metrics:</strong> Return rates, customer spending, shopping frequency</li>
+                    <li><strong>Social Sentiment:</strong> Social media mentions, public sentiment analysis</li>
+                    <li><strong>Compliance Scores:</strong> Sustainability, transparency, compliance, ethical ratings</li>
+                </ul>
+                <p class="text-muted mt-2 mb-0">
+                    <small>
+                        <i class="fas fa-info-circle me-1"></i>
+                        The model provides a confidence score indicating how certain it is about the classification.
+                    </small>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

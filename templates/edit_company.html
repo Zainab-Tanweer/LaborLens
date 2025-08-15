@@ -1,0 +1,421 @@
+{% extends "base.html" %}
+
+{% block title %}Edit {{ company.name }} - Government Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-edit me-2"></i>Edit Company: {{ company.name }}
+                </h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-4">
+                    Update company information. The AI model will automatically reclassify the company 
+                    based on the updated data. Changes are tracked with timestamps.
+                </p>
+                
+                <form method="POST">
+                    <!-- Basic Information -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-info-circle me-2"></i>Basic Information
+                            </h5>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label">
+                                <i class="fas fa-building me-1"></i>Company Name
+                            </label>
+                            <input type="text" class="form-control" id="name" value="{{ company.name }}" readonly>
+                            <div class="form-text">Company name cannot be changed</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="brand" class="form-label">
+                                <i class="fas fa-tag me-1"></i>Brand
+                            </label>
+                            <input type="text" class="form-control" id="brand" name="brand" 
+                                   value="{{ company.brand or '' }}" 
+                                   placeholder="e.g., Nike, Apple, Walmart">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="country" class="form-label">
+                                <i class="fas fa-globe me-1"></i>Country
+                            </label>
+                            <input type="text" class="form-control" id="country" name="country" 
+                                   value="{{ company.country or '' }}" 
+                                   placeholder="e.g., United States, China, Germany">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="year" class="form-label">
+                                <i class="fas fa-calendar me-1"></i>Year
+                            </label>
+                            <input type="number" class="form-control" id="year" name="year" 
+                                   value="{{ company.year or '' }}" 
+                                   placeholder="e.g., 2024" min="2000" max="2030">
+                        </div>
+                    </div>
+                    
+                    <!-- Production & Operations -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-industry me-2"></i>Production & Operations
+                            </h5>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="monthly_production_tonnes" class="form-label">
+                                <i class="fas fa-weight me-1"></i>Monthly Production (tonnes)
+                            </label>
+                            <input type="number" class="form-control" id="monthly_production_tonnes" name="monthly_production_tonnes" 
+                                   value="{{ company.monthly_production_tonnes or '' }}" 
+                                   placeholder="e.g., 500.0" min="0" step="0.1">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="avg_item_price_usd" class="form-label">
+                                <i class="fas fa-dollar-sign me-1"></i>Average Item Price (USD)
+                            </label>
+                            <input type="number" class="form-control" id="avg_item_price_usd" name="avg_item_price_usd" 
+                                   value="{{ company.avg_item_price_usd or '' }}" 
+                                   placeholder="e.g., 25.50" min="0" step="0.01">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="release_cycles_per_year" class="form-label">
+                                <i class="fas fa-sync me-1"></i>Release Cycles Per Year
+                            </label>
+                            <input type="number" class="form-control" id="release_cycles_per_year" name="release_cycles_per_year" 
+                                   value="{{ company.release_cycles_per_year or '' }}" 
+                                   placeholder="e.g., 12" min="0">
+                        </div>
+                    </div>
+                    
+                    <!-- Environmental Impact -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-leaf me-2"></i>Environmental Impact
+                            </h5>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="carbon_emissions_tco2e" class="form-label">
+                                <i class="fas fa-smog me-1"></i>Carbon Emissions (tCO2e)
+                            </label>
+                            <input type="number" class="form-control" id="carbon_emissions_tco2e" name="carbon_emissions_tco2e" 
+                                   value="{{ company.carbon_emissions_tco2e or '' }}" 
+                                   placeholder="e.g., 10000.0" min="0" step="0.1">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="water_usage_million_litres" class="form-label">
+                                <i class="fas fa-tint me-1"></i>Water Usage (million litres)
+                            </label>
+                            <input type="number" class="form-control" id="water_usage_million_litres" name="water_usage_million_litres" 
+                                   value="{{ company.water_usage_million_litres or '' }}" 
+                                   placeholder="e.g., 200.0" min="0" step="0.1">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="landfill_waste_tonnes" class="form-label">
+                                <i class="fas fa-trash me-1"></i>Landfill Waste (tonnes)
+                            </label>
+                            <input type="number" class="form-control" id="landfill_waste_tonnes" name="landfill_waste_tonnes" 
+                                   value="{{ company.landfill_waste_tonnes or '' }}" 
+                                   placeholder="e.g., 800.0" min="0" step="0.1">
+                        </div>
+                    </div>
+                    
+                    <!-- Labor & Working Conditions -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-users me-2"></i>Labor & Working Conditions
+                            </h5>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="avg_worker_wage_usd" class="form-label">
+                                <i class="fas fa-money-bill-wave me-1"></i>Average Worker Wage (USD)
+                            </label>
+                            <input type="number" class="form-control" id="avg_worker_wage_usd" name="avg_worker_wage_usd" 
+                                   value="{{ company.avg_worker_wage_usd or '' }}" 
+                                   placeholder="e.g., 150.0" min="0" step="0.01">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="working_hours_per_week" class="form-label">
+                                <i class="fas fa-clock me-1"></i>Working Hours Per Week
+                            </label>
+                            <input type="number" class="form-control" id="working_hours_per_week" name="working_hours_per_week" 
+                                   value="{{ company.working_hours_per_week or '' }}" 
+                                   placeholder="e.g., 40" min="0" max="168">
+                        </div>
+                    </div>
+                    
+                    <!-- Business Metrics -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-chart-line me-2"></i>Business Metrics
+                            </h5>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="return_rate_percent" class="form-label">
+                                <i class="fas fa-undo me-1"></i>Return Rate (%)
+                            </label>
+                            <input type="number" class="form-control" id="return_rate_percent" name="return_rate_percent" 
+                                   value="{{ company.return_rate_percent or '' }}" 
+                                   placeholder="e.g., 25.5" min="0" max="100" step="0.1">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="avg_spend_per_customer_usd" class="form-label">
+                                <i class="fas fa-shopping-cart me-1"></i>Average Spend Per Customer (USD)
+                            </label>
+                            <input type="number" class="form-control" id="avg_spend_per_customer_usd" name="avg_spend_per_customer_usd" 
+                                   value="{{ company.avg_spend_per_customer_usd or '' }}" 
+                                   placeholder="e.g., 120.0" min="0" step="0.01">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="shopping_frequency_per_year" class="form-label">
+                                <i class="fas fa-calendar-check me-1"></i>Shopping Frequency Per Year
+                            </label>
+                            <input type="number" class="form-control" id="shopping_frequency_per_year" name="shopping_frequency_per_year" 
+                                   value="{{ company.shopping_frequency_per_year or '' }}" 
+                                   placeholder="e.g., 8" min="0">
+                        </div>
+                    </div>
+                    
+                    <!-- Social Media & Sentiment -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-share-alt me-2"></i>Social Media & Sentiment
+                            </h5>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="instagram_mentions_thousands" class="form-label">
+                                <i class="fab fa-instagram me-1"></i>Instagram Mentions (thousands)
+                            </label>
+                            <input type="number" class="form-control" id="instagram_mentions_thousands" name="instagram_mentions_thousands" 
+                                   value="{{ company.instagram_mentions_thousands or '' }}" 
+                                   placeholder="e.g., 5000.0" min="0" step="0.1">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="tiktok_mentions_thousands" class="form-label">
+                                <i class="fas fa-music me-1"></i>TikTok Mentions (thousands)
+                            </label>
+                            <input type="number" class="form-control" id="tiktok_mentions_thousands" name="tiktok_mentions_thousands" 
+                                   value="{{ company.tiktok_mentions_thousands or '' }}" 
+                                   placeholder="e.g., 3000.0" min="0" step="0.1">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="sentiment_score" class="form-label">
+                                <i class="fas fa-heart me-1"></i>Sentiment Score
+                            </label>
+                            <input type="number" class="form-control" id="sentiment_score" name="sentiment_score" 
+                                   value="{{ company.sentiment_score or '' }}" 
+                                   placeholder="e.g., 0.5" min="-1" max="1" step="0.01">
+                            <div class="form-text">Range: -1 (negative) to 1 (positive)</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="social_sentiment_label" class="form-label">
+                                <i class="fas fa-comment me-1"></i>Social Sentiment Label
+                            </label>
+                            <select class="form-select" id="social_sentiment_label" name="social_sentiment_label">
+                                <option value="">Select sentiment</option>
+                                <option value="Positive" {% if company.social_sentiment_label == 'Positive' %}selected{% endif %}>Positive</option>
+                                <option value="Neutral" {% if company.social_sentiment_label == 'Neutral' %}selected{% endif %}>Neutral</option>
+                                <option value="Negative" {% if company.social_sentiment_label == 'Negative' %}selected{% endif %}>Negative</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Economic & Compliance -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-chart-pie me-2"></i>Economic & Compliance
+                            </h5>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="gdp_contribution_million_usd" class="form-label">
+                                <i class="fas fa-coins me-1"></i>GDP Contribution (million USD)
+                            </label>
+                            <input type="number" class="form-control" id="gdp_contribution_million_usd" name="gdp_contribution_million_usd" 
+                                   value="{{ company.gdp_contribution_million_usd or '' }}" 
+                                   placeholder="e.g., 500.0" min="-1000" step="0.1">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="env_cost_index" class="form-label">
+                                <i class="fas fa-leaf me-1"></i>Environmental Cost Index
+                            </label>
+                            <input type="number" class="form-control" id="env_cost_index" name="env_cost_index" 
+                                   value="{{ company.env_cost_index or '' }}" 
+                                   placeholder="e.g., 0.5" min="0" max="1" step="0.01">
+                            <div class="form-text">Range: 0 (low cost) to 1 (high cost)</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="sustainability_score" class="form-label">
+                                <i class="fas fa-seedling me-1"></i>Sustainability Score
+                            </label>
+                            <input type="number" class="form-control" id="sustainability_score" name="sustainability_score" 
+                                   value="{{ company.sustainability_score or '' }}" 
+                                   placeholder="e.g., 75.0" min="0" max="100" step="0.1">
+                            <div class="form-text">Range: 0-100</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="transparency_index" class="form-label">
+                                <i class="fas fa-eye me-1"></i>Transparency Index
+                            </label>
+                            <input type="number" class="form-control" id="transparency_index" name="transparency_index" 
+                                   value="{{ company.transparency_index or '' }}" 
+                                   placeholder="e.g., 60.0" min="0" max="100" step="0.1">
+                            <div class="form-text">Range: 0-100</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="compliance_score" class="form-label">
+                                <i class="fas fa-check-circle me-1"></i>Compliance Score
+                            </label>
+                            <input type="number" class="form-control" id="compliance_score" name="compliance_score" 
+                                   value="{{ company.compliance_score or '' }}" 
+                                   placeholder="e.g., 85.0" min="0" max="100" step="0.1">
+                            <div class="form-text">Range: 0-100</div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="ethical_rating" class="form-label">
+                                <i class="fas fa-star me-1"></i>Ethical Rating
+                            </label>
+                            <input type="number" class="form-control" id="ethical_rating" name="ethical_rating" 
+                                   value="{{ company.ethical_rating or '' }}" 
+                                   placeholder="e.g., 3.5" min="0" max="5" step="0.1">
+                            <div class="form-text">Range: 0-5</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Government Notes & Evidence -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-file-alt me-2"></i>Government Notes & Evidence
+                            </h5>
+                        </div>
+                        
+                        <div class="col-12 mb-3">
+                            <label for="notes" class="form-label">
+                                <i class="fas fa-sticky-note me-1"></i>Notes
+                            </label>
+                            <textarea class="form-control" id="notes" name="notes" rows="3" 
+                                      placeholder="Add any relevant notes about the company, their practices, or any concerns...">{{ company.notes or '' }}</textarea>
+                        </div>
+                        
+                        <div class="col-12 mb-3">
+                            <label for="evidence_sources" class="form-label">
+                                <i class="fas fa-link me-1"></i>Evidence Sources
+                            </label>
+                            <textarea class="form-control" id="evidence_sources" name="evidence_sources" rows="3" 
+                                      placeholder="List sources of information, reports, investigations, or other evidence...">{{ company.evidence_sources or '' }}</textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Current Classification Info -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-gavel me-2"></i>Current Classification
+                            </h5>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Current Status</label>
+                            <div class="form-control-plaintext">
+                                {% if company.classification == 'complicit' %}
+                                    <span class="badge bg-danger">Complicit</span>
+                                {% elif company.classification == 'not_complicit' %}
+                                    <span class="badge bg-success">Not Complicit</span>
+                                {% else %}
+                                    <span class="badge bg-warning">Unclassified</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Confidence Score</label>
+                            <div class="form-control-plaintext">
+                                {% if company.confidence_score %}
+                                    {{ "%.1f"|format(company.confidence_score * 100) }}%
+                                {% else %}
+                                    <span class="text-muted">N/A</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>Note:</strong> The classification will be automatically updated when you save changes.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Buttons -->
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('manage_companies') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Companies
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Update Company
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Change History -->
+        <div class="card border-0 shadow-sm mt-4">
+            <div class="card-header bg-light">
+                <h6 class="mb-0">
+                    <i class="fas fa-history me-2"></i>Change History
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Last Updated:</strong> {{ company.last_updated.strftime('%B %d, %Y at %I:%M %p') if company.last_updated else 'Never' }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Updated By:</strong> 
+                            {% if company.updated_by %}
+                                User ID: {{ company.updated_by }}
+                            {% else %}
+                                <span class="text-muted">Unknown</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

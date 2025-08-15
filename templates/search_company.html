@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Search Companies - Government Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-search me-2"></i>Search Companies
+                </h4>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-4">
+                    Search for companies to check their child labor classification status. 
+                    Enter a company name to see if it's in our database.
+                </p>
+                
+                <form method="POST" class="mb-4">
+                    <div class="input-group">
+                        <input type="text" 
+                               class="form-control form-control-lg" 
+                               name="company_name" 
+                               placeholder="Enter company name (e.g., Shein, Zara, H&M)"
+                               required>
+                        <button class="btn btn-primary btn-lg" type="submit">
+                            <i class="fas fa-search me-2"></i>Search
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="alert alert-info">
+                    <h6><i class="fas fa-info-circle me-2"></i>About Company Classifications</h6>
+                    <p class="mb-0">
+                        Companies are classified using AI-powered analysis based on 30 comprehensive factors including:
+                        <strong>production data</strong>, <strong>environmental impact</strong>, <strong>labor conditions</strong>, 
+                        <strong>business metrics</strong>, <strong>social sentiment</strong>, and <strong>compliance scores</strong>. 
+                        Results show whether a company is classified as <strong>complicit</strong> or 
+                        <strong>not complicit</strong> in child labor practices.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Searches Section (Placeholder) -->
+        <div class="card border-0 shadow-sm mt-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">
+                    <i class="fas fa-history me-2"></i>Recent Searches
+                </h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-0">
+                    <i class="fas fa-clock me-1"></i>
+                    Your search history will appear here. This feature is coming soon.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

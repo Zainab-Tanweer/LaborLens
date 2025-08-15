@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}{{ company.name }} - Company Result{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <!-- Company Header -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">
+                        <i class="fas fa-building me-2"></i>{{ company.name }}
+                    </h3>
+                    <div class="text-end">
+                        <small>Last Updated: {{ company.last_updated.strftime('%B %d, %Y') if company.last_updated else 'N/A' }}</small>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Brand:</strong> {{ company.brand or 'Not specified' }}</p>
+                        <p><strong>Country:</strong> {{ company.country or 'Not specified' }}</p>
+                        <p><strong>Year:</strong> {{ company.year or 'Not specified' }}</p>
+                        <p><strong>Monthly Production:</strong> {{ company.monthly_production_tonnes or 'Not specified' }} tonnes</p>
+                        <p><strong>Average Item Price:</strong> ${{ company.avg_item_price_usd or 'Not specified' }}</p>
+                        <p><strong>Release Cycles/Year:</strong> {{ company.release_cycles_per_year or 'Not specified' }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Carbon Emissions:</strong> {{ company.carbon_emissions_tco2e or 'Not specified' }} tCO2e</p>
+                        <p><strong>Water Usage:</strong> {{ company.water_usage_million_litres or 'Not specified' }} million litres</p>
+                        <p><strong>Landfill Waste:</strong> {{ company.landfill_waste_tonnes or 'Not specified' }} tonnes</p>
+                        <p><strong>Worker Wage:</strong> ${{ company.avg_worker_wage_usd or 'Not specified' }}</p>
+                        <p><strong>Working Hours/Week:</strong> {{ company.working_hours_per_week or 'Not specified' }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Classification Result -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header {% if company.classification == 'complicit' %}bg-danger{% else %}bg-success{% endif %} text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-gavel me-2"></i>Classification Result
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h5 class="mb-3">
+                            {% if company.classification == 'complicit' %}
+                                <span class="text-danger">
+                                    <i class="fas fa-exclamation-triangle me-2"></i>Classified as COMPLICIT
+                                </span>
+                            {% elif company.classification == 'not_complicit' %}
+                                <span class="text-success">
+                                    <i class="fas fa-check-circle me-2"></i>Classified as NOT COMPLICIT
+                                </span>
+                            {% else %}
+                                <span class="text-warning">
+                                    <i class="fas fa-question-circle me-2"></i>Classification: {{ company.classification or 'Unknown' }}
+                                </span>
+                            {% endif %}
+                        </h5>
+                        
+                        {% if company.confidence_score %}
+                            <div class="mb-3">
+                                <label class="form-label">Confidence Score:</label>
+                                <div class="progress" style="height: 25px;">
+                                    <div class="progress-bar {% if company.confidence_score >= 0.8 %}bg-success{% elif company.confidence_score >= 0.6 %}bg-warning{% else %}bg-danger{% endif %}" 
+                                         role="progressbar" 
+                                         style="width: {{ company.confidence_score * 100 }}%"
+                                         aria-valuenow="{{ company.confidence_score * 100 }}" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100">
+                                        {{ "%.1f"|format(company.confidence_score * 100) }}%
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        
+                        <p class="text-muted mb-0">
+                            <small>
+                                <i class="fas fa-info-circle me-1"></i>
+                                This classification is based on AI analysis of company data including environmental impact, labor conditions, and business practices.
+                            </small>
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        {% if company.classification == 'complicit' %}
+                            <i class="fas fa-exclamation-triangle fa-5x text-danger"></i>
+                        {% elif company.classification == 'not_complicit' %}
+                            <i class="fas fa-check-circle fa-5x text-success"></i>
+                        {% else %}
+                            <i class="fas fa-question-circle fa-5x text-warning"></i>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Business & Environmental Metrics -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-line me-2"></i>Business Metrics
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Return Rate:</strong> {{ company.return_rate_percent or 'Not specified' }}%</p>
+                        <p><strong>Avg Customer Spend:</strong> ${{ company.avg_spend_per_customer_usd or 'Not specified' }}</p>
+                        <p><strong>Shopping Frequency:</strong> {{ company.shopping_frequency_per_year or 'Not specified' }} times/year</p>
+                        <p><strong>GDP Contribution:</strong> ${{ company.gdp_contribution_million_usd or 'Not specified' }}M</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-leaf me-2"></i>Sustainability & Compliance
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Sustainability Score:</strong> {{ company.sustainability_score or 'Not specified' }}/100</p>
+                        <p><strong>Transparency Index:</strong> {{ company.transparency_index or 'Not specified' }}/100</p>
+                        <p><strong>Compliance Score:</strong> {{ company.compliance_score or 'Not specified' }}/100</p>
+                        <p><strong>Ethical Rating:</strong> {{ company.ethical_rating or 'Not specified' }}/5</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Media & Sentiment -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">
+                    <i class="fas fa-share-alt me-2"></i>Social Media & Public Sentiment
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Instagram Mentions:</strong> {{ company.instagram_mentions_thousands or 'Not specified' }}K</p>
+                        <p><strong>TikTok Mentions:</strong> {{ company.tiktok_mentions_thousands or 'Not specified' }}K</p>
+                        <p><strong>Sentiment Score:</strong> {{ company.sentiment_score or 'Not specified' }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Social Sentiment:</strong> 
+                            {% if company.social_sentiment_label %}
+                                <span class="badge {% if company.social_sentiment_label == 'Positive' %}bg-success{% elif company.social_sentiment_label == 'Negative' %}bg-danger{% else %}bg-secondary{% endif %}">
+                                    {{ company.social_sentiment_label }}
+                                </span>
+                            {% else %}
+                                Not specified
+                            {% endif %}
+                        </p>
+                        <p><strong>Environmental Cost Index:</strong> {{ company.env_cost_index or 'Not specified' }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Government Notes (if available) -->
+        {% if company.notes or company.evidence_sources %}
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-file-alt me-2"></i>Government Notes & Evidence
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if company.notes %}
+                        <div class="mb-3">
+                            <h6><strong>Notes:</strong></h6>
+                            <p class="mb-0">{{ company.notes }}</p>
+                        </div>
+                    {% endif %}
+                    
+                    {% if company.evidence_sources %}
+                        <div>
+                            <h6><strong>Evidence Sources:</strong></h6>
+                            <p class="mb-0">{{ company.evidence_sources }}</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Action Buttons -->
+        <div class="text-center">
+            <a href="{{ url_for('search_company') }}" class="btn btn-outline-primary me-2">
+                <i class="fas fa-search me-2"></i>Search Another Company
+            </a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+                <i class="fas fa-tachometer-alt me-2"></i>Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %} 
